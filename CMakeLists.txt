@@ -26,6 +26,7 @@ if(Python3_NumPy_FOUND)
 else()
     target_compile_definitions(chhRobotics_CPP INTERFACE WITHOUT_NUMPY)
 endif()
+
 install(
         TARGETS chhRobotics_CPP
         EXPORT install_targets
