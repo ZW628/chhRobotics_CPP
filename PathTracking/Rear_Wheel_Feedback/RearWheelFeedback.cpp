@@ -9,12 +9,15 @@
  * @param angle
  * @return
  */
-double RearWheelFeedback::normalizeAngle(double angle) {
-    while(angle>PI){
-        angle-=2.0*PI;
+double RearWheelFeedback::normalizeAngle(double angle)
+{
+    while (angle > PI)
+    {
+        angle -= 2.0 * PI;
     }
-    while(angle<-PI){
-        angle+=2.0*PI;
+    while (angle < -PI)
+    {
+        angle += 2.0 * PI;
     }
     return angle;
 }
@@ -27,19 +30,20 @@ double RearWheelFeedback::normalizeAngle(double angle) {
  * @param ref_psi 参考轨迹上点的切线方向的角度
  * @return
  */
-double RearWheelFeedback::rearWheelFeedbackControl(vector<double> robot_state, double e, double k, double ref_psi) {
-    double psi = robot_state[2],v = robot_state[3];
-    double psi_e = normalizeAngle(psi-ref_psi);//psi_e=yaw-ref_yaw
+double RearWheelFeedback::rearWheelFeedbackControl(vector<double> robot_state, double e, double k, double ref_psi)
+{
+    double psi = robot_state[2], v = robot_state[3];
+    double psi_e = normalizeAngle(psi - ref_psi); // psi_e=yaw-ref_yaw
     // 公式17
-    double psi_dot = v * k * cos(psi_e) / (1.0 - k * e)  - K2 * v * sin(psi_e) * e / psi_e- Kpsi * abs(v) * psi_e;
+    double psi_dot = v * k * cos(psi_e) / (1.0 - k * e) - K2 * v * sin(psi_e) * e / psi_e - Kpsi * abs(v) * psi_e;
 
-    if(psi_e == 0.0 || psi_dot == 0.0)return 0.0;
+    if (psi_e == 0.0 || psi_dot == 0.0)
+        return 0.0;
 
     // 公式21
     double delta = atan2(L * psi_dot, v);
 
     return delta;
-
 }
 
 /**
@@ -48,10 +52,9 @@ double RearWheelFeedback::rearWheelFeedbackControl(vector<double> robot_state, d
  * @param K2
  * @param L
  */
-RearWheelFeedback::RearWheelFeedback(double Kpsi, double K2, double L) {
-    this->Kpsi=Kpsi;
-    this->K2=K2;
-    this->L=L;
+RearWheelFeedback::RearWheelFeedback(double Kpsi, double K2, double L)
+{
+    this->Kpsi = Kpsi;
+    this->K2 = K2;
+    this->L = L;
 }
-
-
