@@ -103,20 +103,21 @@ double MyReferencePath::normalizeAngle(double angle)
  */
 refTraj MyReferencePath::calc_ref_trajectory(vector<double> robot_state, parameters param, double dl)
 {
-    vector<double> track_error = calcTrackError(robot_state); // e,k,ref_yaw,ind
+    vector<double> track_error = calcTrackError(robot_state); // e,k,ref_yaw,ind(min_index)
     double e = track_error[0], k = track_error[1], ref_yaw = track_error[2], ind = track_error[3];
     refTraj ref_traj;
     ref_traj.xref = MatrixXd(param.NX, param.T + 1);
     ref_traj.dref = MatrixXd(param.NU, param.T);
     int ncourse = refer_path.size();
-    ref_traj.xref(0, 0) = refer_path[ind][0];
-    ref_traj.xref(1, 0) = refer_path[ind][1];
-    ref_traj.xref(2, 0) = refer_path[ind][2];
+    ref_traj.xref(0, 0) = refer_path[ind][0]; // x
+    ref_traj.xref(1, 0) = refer_path[ind][1]; // y
+    ref_traj.xref(2, 0) = refer_path[ind][2]; // yaw
+
     // 参考控制量[v,delta]
     double ref_delta = atan2(param.L * k, 1);
     for (int i = 0; i < param.T; i++)
     {
-        ref_traj.dref(0, i) = robot_state[3];
+        ref_traj.dref(0, i) = robot_state[3]; // v
         ref_traj.dref(1, i) = ref_delta;
     }
 

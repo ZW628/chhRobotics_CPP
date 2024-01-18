@@ -93,8 +93,7 @@ make
 - [学习卡尔曼滤波（二）——扩展卡尔曼滤波](https://blog.csdn.net/weixin_42301220/article/details/124605350)
 - [学习卡尔曼滤波（三）——无迹卡尔曼滤波](https://blog.csdn.net/weixin_42301220/article/details/124708187)
 
-
 robot_state = ugv.getState();
 x, y, psi, v
 
-refer_path包括4维：位置x, 位置y， 轨迹点的切线方向（yaw）, 曲率k
+refer_path包括4维：[i][0] 位置x,  [i][1] 位置y， [i][2] 轨迹点的切线方向（yaw）, [i][3] 曲率k
