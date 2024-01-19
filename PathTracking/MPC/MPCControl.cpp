@@ -4,9 +4,9 @@ MPCControl::MPCControl(int nx, int nu, int t) : NX(nx), NU(nu), T(t) {}
 
 vector<double> MPCControl::linearMPCControl(MatrixXd xref, Vector3d x0, MatrixXd ref_delta, KinematicModel ugv)
 {
-    int NX = xref.rows();
-    int NU = ref_delta.rows();
-    int T = xref.cols() - 1; // Horizon length.
+    int NX = xref.rows();      // x,y,yaw
+    int NU = ref_delta.rows(); // 控制量v,delta
+    int T = xref.cols() - 1;   // Horizon length.
 
     // Define optimization variables.
     MatrixXd x(NX, T + 1);
@@ -19,7 +19,7 @@ vector<double> MPCControl::linearMPCControl(MatrixXd xref, Vector3d x0, MatrixXd
     // Initialize A and B matrices.
     for (int t = 0; t < T; ++t)
     {
-        auto state_space = ugv.stateSpace(ref_delta(1, t), xref(2, t));
+        auto state_space = ugv.stateSpace(ref_delta(1, t), xref(2, t)); // xref(2):yaw
         A_vec.push_back(state_space[0]);
         B_vec.push_back(state_space[1]);
     }
